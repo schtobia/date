@@ -153,8 +153,8 @@ public:
     CONSTCD11 explicit operator int() const NOEXCEPT;
     CONSTCD11 bool ok() const NOEXCEPT;
 
-    static CONSTCD11 year min() NOEXCEPT;
-    static CONSTCD11 year max() NOEXCEPT;
+    static CONSTCD11 year (min)() NOEXCEPT;
+    static CONSTCD11 year (max)() NOEXCEPT;
 };
 
 CONSTCD11 bool operator==(const year& x, const year& y) NOEXCEPT;
@@ -613,12 +613,12 @@ year::is_leap() const NOEXCEPT
 }
 
 CONSTCD11 inline year::operator int() const NOEXCEPT {return y_;}
-CONSTCD11 inline bool year::ok() const NOEXCEPT {return min() <= *this && *this <= max();}
+CONSTCD11 inline bool year::ok() const NOEXCEPT {return (min)() <= *this && *this <= (max)();}
 
 CONSTCD11
 inline
 year
-year::min() NOEXCEPT
+(year::min)() NOEXCEPT
 {
     using std::chrono::seconds;
     using std::chrono::minutes;
@@ -627,14 +627,14 @@ year::min() NOEXCEPT
     static_assert(sizeof(seconds)*CHAR_BIT >= 41, "seconds may overflow");
     static_assert(sizeof(hours)*CHAR_BIT >= 30, "hours may overflow");
     return sizeof(minutes)*CHAR_BIT < 34 ?
-        year{1970} + duration_cast<years>(minutes::min()) :
-        year{std::numeric_limits<short>::min()};
+        year{1970} + duration_cast<years>((minutes::min)()) :
+        year{(std::numeric_limits<short>::min)()};
 }
 
 CONSTCD11
 inline
 year
-year::max() NOEXCEPT
+(year::max)() NOEXCEPT
 {
     using std::chrono::seconds;
     using std::chrono::minutes;
@@ -644,7 +644,7 @@ year::max() NOEXCEPT
     static_assert(sizeof(hours)*CHAR_BIT >= 30, "hours may overflow");
     return sizeof(minutes)*CHAR_BIT < 34 ?
         year{1969} + duration_cast<years>(minutes::max()) :
-        year{std::numeric_limits<short>::max()};
+        year{(std::numeric_limits<short>::max)()};
 }
 
 CONSTCD11
